@@ -2,10 +2,10 @@
 title: "Spatial data in shiny"
 subtitle: BIO8068 Data visualisation in Ecology
 output:
-  html_document:
-    df_print: paged
   word_document:
     reference_docx: template.docx
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -35,7 +35,8 @@ library(mapview)
 # Create the map
 my_map <- leaflet() %>%
    addTiles() %>%  # Add default OpenStreetMap map tiles
-   addMarkers(lng=-1.6178, lat=54.9783, popup="World's most important city!")
+   addMarkers(lng=-1.6178, lat=54.9783,
+              popup="World's most important city!")
 
 my_map  # Display the map in Viewer window
 ```
@@ -46,7 +47,7 @@ http://leaflet-extras.github.io/leaflet-providers/preview/
 
 If you enter the `providers` as `providers$` then hit the TAB key in RStudio a list of possible maps will be displayed. Note that some require registration or do not cover the UK.  Ones you might find useful are `Esri.WorldImagery` and `Esri.WorldShadeRelief`, but explore other backdrops as there is now a large range of backdrops.
 
-## 1.3 Multiple backdrop maps
+## 1.2 Multiple backdrop maps
 As with ArcGIS and QGIS you can add multiple backdrop maps, but then run the risk of one being too opaque and covering underling maps.  You can therefore modify the 'transparency' of different maps.  For example, the following code will show the satellite map, overlain with the main roads, and the names of the main roads
 
 ```{r, eval=FALSE}
@@ -55,7 +56,8 @@ leaflet() %>%
    addProviderTiles(providers$Stamen.TonerLines,
                     options = providerTileOptions(opacity = 0.5)) %>%
    addProviderTiles(providers$Stamen.TonerLabels) %>% 
-   addMarkers(lng=-1.6178, lat=54.9783, popup="World's most important city!")
+   addMarkers(lng=-1.6178, lat=54.9783,
+              popup="World's most important city!")
 ```
 
 Note that the second `addProviderTiles()` line is split over two lines of code:
@@ -69,7 +71,7 @@ Although you could write it on one line, as you include more mapping options the
 
 Try changing the opacity of different layers.  Notice that here we are not saving the map into a leaflet object (`my_map` in the first example) but rather sending the map directly to the screen.
 
-## 1.4 Changing marker symbols
+## 1.3 Changing marker symbols
 Sometimes it is useful to be able to change the colour of a marker, for example to identify points representing different features, or the size of a marker, to indicate quantities or amounts. Circle markers are particularly useful for this:
 
 ```{r, eval=FALSE}
@@ -82,12 +84,12 @@ leaflet() %>%
 
 You can also use options to change the fill colour, opacity (transparency) of the Circle Markers. Look up the help for addCircleMarkers and experiment with some of these. **Practice exercise**: Given that London is at 51.5074 N and 0.1278 W, and the population Newcastle upon Tyne is 270,000 whilst that of London is 8,000,000 try and produce a map with markers roughly proportional to the populations of the two cities, selecting Circle Marker colours and symbols as you think best.
 
-## 1.5 Marker popups and labels
-These are very similar, and you have already used some popups. The standard popup requires the user to click on a marker to display the text, but if instead you use the ``label` option the text will be displayed just be hovering the mouse. Modify the code in one of your earlier examples to try this out. You have greater control using the `labelOptions` to adjust text size, font, bounding box etc.  The format of the function is still within the `addMarkers` or `addCircleMarkers` function, for example:
+## 1.4 Marker labels versus marker popups
+Use of a marker `label` gives you more formatting control than a `popup`. The standard `popup` requires the user to click on a marker to display the text, but if instead you use the `label` option **instead** of `popup` the text will be displayed just be hovering the mouse. Modify the code in one of your earlier examples to try this out. You have greater control using the `labelOptions` to adjust text size, font, bounding box etc.  The format of the function is still within the `addMarkers` or `addCircleMarkers` function, for example:
 
 ```{r, eval=FALSE}
 addCircleMarkers(lng=-1.6178, lat=54.9783,
-      popup="Newcastle population 270k",
+      label="Newcastle population 270k",  # Note change to label
       labelOptions = labelOptions(textsize = "15px")
 ```
 
